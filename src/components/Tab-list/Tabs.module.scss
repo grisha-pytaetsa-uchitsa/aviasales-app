@@ -1,0 +1,36 @@
+.button_container {
+  display: flex;
+  justify-content: flex-start;
+  width: 502px;
+  height: 50px;
+  button {
+    width: 100%;
+    color: #4a4a4a;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 20px;
+    text-transform: uppercase;
+    background-color: #fff;
+  }
+  button:hover {
+    color: #fff;
+    background-color: #2196f3;
+    opacity: 0.5;
+  }
+  .active {
+    color: #fff;
+    background-color: #2196f3;
+  }
+  .inexp {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .fast {
+    border-left: 1px solid #dfe5ec;
+  }
+  .optimal {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 1px solid #dfe5ec;
+  }
+}

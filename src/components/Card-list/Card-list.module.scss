@@ -1,0 +1,26 @@
+.card_list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .more {
+    color: #fff;
+    width: 502px;
+    height: 50px;
+    margin-bottom: 20px;
+    background-color: #2196f3;
+    border-radius: 5px;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+  .no_filter {
+    width: 502px;
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+    p {
+      font-size: 18px;
+    }
+  }
+}
