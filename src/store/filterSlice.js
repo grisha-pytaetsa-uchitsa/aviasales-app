@@ -1,8 +1,9 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 
-export const fetchGetTickets = createAsyncThunk('filter/fetchGetTickets', async (_, { rejectWithValue }) => {
+export const fetchGetTickets = createAsyncThunk('filter/fetchGetTickets', async (_, { rejectWithValue, dispatch }) => {
   if (!localStorage.getItem('searchId')) {
     const response = await fetch('https://aviasales-test-api.kata.academy/search');
     await response.json().then((res) => localStorage.setItem('searchId', ...Object.values(res)));
@@ -15,12 +16,13 @@ export const fetchGetTickets = createAsyncThunk('filter/fetchGetTickets', async 
   try {
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error('Warning! Error, reload this page! Nadeus i seychas status 500, a ne moia vina');
+      throw new Error('Warning! Error, reload this page! Nadeus i seychas status 500, a ne cho-to postrashnee');
     }
     const data = await res.json();
     return data;
   } catch (err) {
-    return rejectWithValue(err.message);
+    console.error(rejectWithValue(err.message));
+    dispatch(fetchGetTickets());
   }
 });
 
@@ -74,11 +76,15 @@ const filterSlice = createSlice({
     },
     [fetchGetTickets.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.tickets.push(...action.payload.tickets);
-      if (!action.payload.stop) {
-        state.stop += 1;
-      } else {
-        state.stop = true;
+      try {
+        state.tickets.push(...action.payload.tickets);
+        if (!action.payload.stop) {
+          state.stop += 1;
+        } else {
+          state.stop = true;
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
     [fetchGetTickets.rejected]: (state, action) => {

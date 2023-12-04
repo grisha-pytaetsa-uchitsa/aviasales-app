@@ -19,6 +19,7 @@ export default function CardList() {
   useEffect(() => {
     dispatch(fetchGetTickets());
   }, [dispatch, stop]);
+  console.log(tickets);
 
   const isActiveAnyFilter = filter.filter((el) => el.active);
 
