@@ -3,13 +3,23 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 
+let searchId = '';
+
 export const fetchGetTickets = createAsyncThunk('filter/fetchGetTickets', async (_, { rejectWithValue, dispatch }) => {
-  if (!localStorage.getItem('searchId')) {
-    const response = await fetch('https://aviasales-test-api.kata.academy/search');
-    await response.json().then((res) => localStorage.setItem('searchId', ...Object.values(res)));
+  try {
+    if (!searchId) {
+      const response = await fetch('https://aviasales-test-api.kata.academy/search');
+      if (!response.ok) {
+        throw new Error('Ошибка при получении id');
+      }
+      const searchIdObkect = await response.json();
+      searchId = Object.values(searchIdObkect);
+    }
+  } catch (err) {
+    return rejectWithValue(err.message);
   }
 
-  const { searchId } = localStorage;
+  // const { searchId } = localStorage;
 
   const url = `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`;
 
@@ -21,8 +31,11 @@ export const fetchGetTickets = createAsyncThunk('filter/fetchGetTickets', async 
     const data = await res.json();
     return data;
   } catch (err) {
-    console.error(rejectWithValue(err.message));
-    dispatch(fetchGetTickets());
+    if (err.message === 'Warning! Error, reload this page! Nadeus i seychas status 500, a ne cho-to postrashnee') {
+      console.error(rejectWithValue(err.message));
+      dispatch(fetchGetTickets());
+    }
+    return rejectWithValue(err.message);
   }
 });
 
@@ -89,7 +102,9 @@ const filterSlice = createSlice({
     },
     [fetchGetTickets.rejected]: (state, action) => {
       state.status = 'rejected';
-      state.error = action.payload;
+      if (action.payload !== 'Warning! Error, reload this page! Nadeus i seychas status 500, a ne cho-to postrashnee') {
+        state.error = action.payload;
+      }
     },
   },
 });
