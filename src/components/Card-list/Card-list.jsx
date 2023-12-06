@@ -1,9 +1,10 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-return-assign */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { nanoid } from '@reduxjs/toolkit';
+// import { nanoid } from '@reduxjs/toolkit';
 
 import { fetchGetTickets } from '../../store/filterSlice';
 import Card from '../Card/Card';
@@ -31,8 +32,6 @@ export default function CardList() {
 
   const sortByDuration = (arr) => arr.sort((a, b) => (a.segments[0].duration > b.segments[0].duration ? 1 : -1));
 
-  // const filterFn = (arr) => arr.sort((a, b) => (a.segments[0].stops.length > b.segments[0].stops.length ? 1 : -1));
-
   if (sortingBtn[0].active) {
     sortTickets = sortByPrice([...tickets]);
   } else if (sortingBtn[1].active) {
@@ -47,22 +46,23 @@ export default function CardList() {
     filterTickets = sortTickets.filter((ticket) => activeFilters.includes(ticket.segments[0].stops.length));
   }
 
-  const newShortTicketsState = filterTickets.slice(0, counter);
+  const newShortState = filterTickets.slice(0, counter);
 
   return (
     <ul className={styles.card_list}>
       {isActiveAnyFilter.length > 0 ? (
-        newShortTicketsState.map((el) => <Card key={nanoid()} {...el} />)
+        newShortState.map((el, idx) => <Card key={idx} {...el} />)
       ) : (
         <li className={styles.no_filter}>
           <p>Рейсов, подходящих под заданные фильтры, не найдено</p>
         </li>
       )}
-      {isActiveAnyFilter.length > 0 || newShortTicketsState > 0 ? (
+
+      {isActiveAnyFilter.length > 0 && (
         <button className={styles.more} type="button" onClick={() => setCounter(counter + 5)}>
           Показать еще 5 билетов!
         </button>
-      ) : null}
+      )}
     </ul>
   );
 }

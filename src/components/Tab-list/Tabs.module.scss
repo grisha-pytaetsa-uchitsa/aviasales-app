@@ -3,19 +3,20 @@
   justify-content: flex-start;
   width: 502px;
   height: 50px;
-  button {
+  label {
     width: 100%;
     color: #4a4a4a;
     font-size: 12px;
     font-weight: 600;
-    padding: 0 20px;
+    padding: 17px 20px 0 20px;
     text-transform: uppercase;
     background-color: #fff;
   }
-  button:hover {
+  label:hover {
     color: #fff;
     background-color: #2196f3;
     opacity: 0.5;
+    cursor: pointer;
   }
   .active {
     color: #fff;

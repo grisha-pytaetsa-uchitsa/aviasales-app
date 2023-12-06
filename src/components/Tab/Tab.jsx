@@ -22,8 +22,9 @@ export default function Tab({ label, id, active }) {
     activeCls = `${cls} ${styles.active}`;
   }
   return (
-    <button className={active ? activeCls : cls} type="button" onClick={() => dispatch(toggleTab({ id }))}>
+    <label className={active ? activeCls : cls}>
+      <input type="radio" name="drone" onChange={() => dispatch(toggleTab({ id }))} />
       {label}
-    </button>
+    </label>
   );
 }
