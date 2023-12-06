@@ -44,10 +44,10 @@ const filterSlice = createSlice({
   initialState: {
     filter: [
       { label: 'Все', active: false, id: nanoid() },
-      { label: 'Без пересадок', active: false, id: nanoid() },
-      { label: '1 пересадка', active: false, id: nanoid() },
-      { label: '2 пересадки', active: false, id: nanoid() },
-      { label: '3 пересадки', active: false, id: nanoid() },
+      { label: 'Без пересадок', active: false, id: nanoid(), count: 0 },
+      { label: '1 пересадка', active: false, id: nanoid(), count: 1 },
+      { label: '2 пересадки', active: false, id: nanoid(), count: 2 },
+      { label: '3 пересадки', active: false, id: nanoid(), count: 3 },
     ],
     sortingBtn: [
       { label: 'самый дешевый', active: true, id: nanoid() },

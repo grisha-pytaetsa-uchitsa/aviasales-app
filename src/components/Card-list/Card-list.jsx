@@ -21,6 +21,7 @@ export default function CardList() {
   }, [dispatch, stop]);
 
   const isActiveAnyFilter = filter.filter((el) => el.active);
+  const activeFilters = isActiveAnyFilter.map((el) => el.count);
 
   let sortTickets;
 
@@ -30,7 +31,7 @@ export default function CardList() {
 
   const sortByDuration = (arr) => arr.sort((a, b) => (a.segments[0].duration > b.segments[0].duration ? 1 : -1));
 
-  const filterFn = (arr) => arr.sort((a, b) => (a.segments[0].stops.length > b.segments[0].stops.length ? 1 : -1));
+  // const filterFn = (arr) => arr.sort((a, b) => (a.segments[0].stops.length > b.segments[0].stops.length ? 1 : -1));
 
   if (sortingBtn[0].active) {
     sortTickets = sortByPrice([...tickets]);
@@ -42,18 +43,8 @@ export default function CardList() {
 
   if (filter[0].active) {
     filterTickets = sortTickets;
-  } else if (filter[1].active) {
-    filterTickets = filterFn(sortTickets);
-    filterTickets = filterTickets.filter((el) => el.segments[0].stops.length === 0).reverse();
-  } else if (filter[2].active) {
-    filterTickets = filterFn(sortTickets);
-    filterTickets = filterTickets.filter((el) => el.segments[0].stops.length === 1).reverse();
-  } else if (filter[3].active) {
-    filterTickets = filterFn(sortTickets);
-    filterTickets = filterTickets.filter((el) => el.segments[0].stops.length === 2).reverse();
-  } else if (filter[4].active) {
-    filterTickets = filterFn(sortTickets);
-    filterTickets = filterTickets.filter((el) => el.segments[0].stops.length === 3).reverse();
+  } else {
+    filterTickets = sortTickets.filter((ticket) => activeFilters.includes(ticket.segments[0].stops.length));
   }
 
   const newShortTicketsState = filterTickets.slice(0, counter);
